@@ -64,7 +64,7 @@
     static func scaleImage(image: UIImage,scaleSize:CGFloat) -> UIImage {
 　　　　　//控制图片的尺寸
         UIGraphicsBeginImageContext(CGSize(width:image.size.width,height:image.size.height*scaleSize))
-        image.draw(in: CGRect(x: 0.5*(image.size.width-image.size.width * scaleSize), y: 0, width: image.size.width * scaleSize, height: image.size.height*scaleSize))`
+        image.draw(in: CGRect(x: 0.5*(KScreenWidth-image.size.width * scaleSize), y: 0, width: image.size.width * scaleSize, height: image.size.height*scaleSize))`
         
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         

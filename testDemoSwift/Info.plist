@@ -111,6 +111,8 @@
 	<string>相机</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>相册</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>访问麦克风</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

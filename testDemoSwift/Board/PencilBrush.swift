@@ -19,7 +19,6 @@ class PencilBrush: BaseBrush {
             context.addLine(to: CGPoint(x: endPoint.x, y: endPoint.y))
         }
     }
-    
     override func supportedContinuousDrawing() -> Bool {
         return true
     }

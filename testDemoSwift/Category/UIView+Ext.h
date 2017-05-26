@@ -9,6 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface UIView (Ext)
-//- (UIColor*) getPixelColorAtLocation:(CGPoint)point inImage:(UIImage *)image;
 - (UIColor *) colorOfPoint:(CGPoint)point;
 @end

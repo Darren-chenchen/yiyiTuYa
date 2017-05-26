@@ -21,11 +21,12 @@ extension UIView {
     }
     
    /// 设置view圆角
-//    func CLViewsBorder(view:UIView, borderWidth:CGFloat, borderColor:UIColor,cornerRadius:CGFloat){
-//        view.layer.borderWidth = 1;
-//        view.layer.borderColor = borderColor.CGColor
-//        view.layer.cornerRadius = cornerRadius
-//    }
+    func CLViewsBorder(view:UIView, borderWidth:CGFloat, borderColor:UIColor,cornerRadius:CGFloat){
+        view.layer.borderWidth = 1;
+        view.layer.borderColor = borderColor.cgColor
+        view.layer.cornerRadius = cornerRadius
+        view.layer.masksToBounds = true
+    }
     
     /// x
     var cl_x: CGFloat {

@@ -12,7 +12,7 @@ extension UIImage {
     // 对截取的长图进行压缩，因为项目中的长图是设置为背景颜色，如果不压缩到适当的尺寸图片就会平铺
     static func scaleImage(image: UIImage,scaleSize:CGFloat) -> UIImage {
         UIGraphicsBeginImageContext(CGSize(width:image.size.width,height:image.size.height*scaleSize))
-        image.draw(in: CGRect(x: 0.5*(image.size.width-image.size.width * scaleSize), y: 0, width: image.size.width * scaleSize, height: image.size.height*scaleSize))
+        image.draw(in: CGRect(x: 0.5*(KScreenWidth-image.size.width * scaleSize), y: 0, width: image.size.width * scaleSize, height: image.size.height*scaleSize))
         
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         

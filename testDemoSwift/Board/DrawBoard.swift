@@ -99,6 +99,21 @@ class DrawBoard: UIImageView {
     var strokeColor: UIColor = UIColor.black
     // 文本编辑状态,文本的字体大小
     var textFont: UIFont = UIFont.systemFont(ofSize: 16)
+    // 文本输入
+    lazy var textView: UITextView = {
+        let textView = UITextView.init(frame: CGRect(x: (self.brush?.beginPoint.x)!, y: (self.brush?.beginPoint.y)!, width: KScreenWidth-(self.brush?.endPoint.x)!-10, height: 200))
+        textView.backgroundColor = UIColor.clear
+        textView.delegate = self
+        textView.layer.borderWidth = 1
+        textView.layer.borderColor = UIColor.red.cgColor
+        return textView
+    }()
+    // 橡皮擦效果图片
+    lazy var eraserImage: UIImageView = {
+        let img = UIImageView.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        self.addSubview(img)
+        return img
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -117,6 +132,17 @@ class DrawBoard: UIImageView {
             
             self.drawingState = .began
             
+            // 如果是橡皮擦，展示橡皮擦的效果
+            if self.brush?.classForKeyedArchiver == EraserBrush.classForCoder() {
+                self.eraserImage.isHidden = false
+                let imageW = self.strokeWidth*3
+                self.eraserImage.frame = CGRect(origin: brush.beginPoint, size: CGSize(width: imageW, height: imageW))
+                self.eraserImage.layer.cornerRadius = imageW*0.5
+                self.eraserImage.layer.masksToBounds = true
+                self.eraserImage.backgroundColor = mainColor
+            }
+            
+            // 如果是文本输入就展示文本，其他的是绘图
             if self.brush?.classForKeyedArchiver == InputBrush.classForCoder()  {
                 self.drawingText()
             } else {
@@ -138,10 +164,15 @@ class DrawBoard: UIImageView {
             if self.brush?.classForKeyedArchiver == RectangleBrush.classForCoder()  {
                 self.strokeColor = self.color(of: brush.endPoint)
             }
+            
+            // 如果是橡皮擦，展示橡皮擦的效果
+            if self.brush?.classForKeyedArchiver == EraserBrush.classForCoder() {
+                let imageW = self.strokeWidth*3
+                self.eraserImage.frame = CGRect(origin: brush.endPoint, size: CGSize(width: imageW, height: imageW))
+            }
 
             if self.brush?.classForKeyedArchiver == InputBrush.classForCoder()  {
                 self.drawingText()
-                self.becomeFirstResponder()
             } else {
                 self.drawingImage()
             }
@@ -160,6 +191,11 @@ class DrawBoard: UIImageView {
             
             self.drawingState = .ended
             
+            // 如果是橡皮擦，展示橡皮擦的效果
+            if self.brush?.classForKeyedArchiver == EraserBrush.classForCoder() {
+                self.eraserImage.isHidden = true
+            }
+            
             if self.brush?.classForKeyedArchiver == InputBrush.classForCoder()  {
                 self.drawingText()
             } else {
@@ -167,14 +203,7 @@ class DrawBoard: UIImageView {
             }
         }
     }
-    lazy var textView: UITextView = {
-        let textView = UITextView.init(frame: CGRect(x: (self.brush?.beginPoint.x)!, y: (self.brush?.beginPoint.y)!, width: KScreenWidth-(self.brush?.endPoint.x)!-10, height: 200))
-        textView.backgroundColor = UIColor.clear
-        textView.delegate = self
-        textView.layer.borderWidth = 1
-        textView.layer.borderColor = UIColor.red.cgColor
-        return textView
-    }()
+    
     //MARK: - 写文字
     fileprivate func drawingText() {
         self.textView.text = nil
@@ -272,7 +301,7 @@ class DrawBoard: UIImageView {
         }
     }
     
-    // 返回画板上的图片，用于保存
+    //MARK: - 返回画板上的图片，用于保存
     func takeImage() -> UIImage {
         UIGraphicsBeginImageContext(self.bounds.size)
         
@@ -334,6 +363,7 @@ class DrawBoard: UIImageView {
 
 }
 
+//MARK: - UITextViewDelegate
 extension DrawBoard:UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         self.DrawTextAndImage(text: textView.text)

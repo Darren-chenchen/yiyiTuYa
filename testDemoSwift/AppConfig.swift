@@ -32,6 +32,11 @@ var RGBAColor: (CGFloat, CGFloat, CGFloat, CGFloat) -> UIColor = {red, green, bl
     return UIColor(red: red / 255, green: green / 255, blue: blue / 255, alpha: alpha);
 }
 
+var mainColor: UIColor {
+    return RGBAColor(212.0,35.0,122.0,1.0)
+}
+
+
 // MARK:- 设置圆角
 func HDViewsBorder(_ view:UIView, borderWidth:CGFloat, borderColor:UIColor,cornerRadius:CGFloat){
     view.layer.borderWidth = borderWidth;

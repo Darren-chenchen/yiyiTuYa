@@ -11,8 +11,18 @@ import UIKit
 extension UIImage {
     // 对截取的长图进行压缩，因为项目中的长图是设置为背景颜色，如果不压缩到适当的尺寸图片就会平铺
     static func scaleImage(image: UIImage,scaleSize:CGFloat) -> UIImage {
-        UIGraphicsBeginImageContext(CGSize(width:image.size.width,height:image.size.height*scaleSize))
-        image.draw(in: CGRect(x: 0.5*(KScreenWidth-image.size.width * scaleSize), y: 0, width: image.size.width * scaleSize, height: image.size.height*scaleSize))
+        // 画板的高度
+        let boardH = KScreenHeight-64-50-40
+        // 图片大小
+        UIGraphicsBeginImageContext(CGSize(width:KScreenWidth,height:boardH))
+        
+        let imageY: CGFloat!
+        if scaleSize==1 {
+            imageY = (boardH - image.size.height)*0.5
+        } else {
+            imageY = 0
+        }
+        image.draw(in: CGRect(x: 0.5*(KScreenWidth-image.size.width * scaleSize), y: imageY, width: image.size.width * scaleSize, height: image.size.height*scaleSize))
         
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         

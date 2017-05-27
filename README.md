@@ -59,22 +59,21 @@
         scrollView?.addSubview(drawBoardImageView)
 3.2 因为截取的是一个长图，所以如果直接设置 drawBoardImageView.backgroundColor = UIColor(patternImage: self.editorImage)，就会只显示图片的一部分，所以要对图片进行压缩
 。在压缩图片时需要注意一点：图片的大小还是屏幕大小，只是内容压缩，如果图片宽度小于屏幕宽度，图片会平铺铺满整个界面。下面是压缩图片的代码
-`
-// 对截取的长图进行压缩，因为项目中的长图是设置为背景颜色，如果不压缩到适当的尺寸图片就会平铺
-    static func scaleImage(image: UIImage,scaleSize:CGFloat) -> UIImage {
-　　　　　//控制图片的尺寸
-        UIGraphicsBeginImageContext(CGSize(width:image.size.width,height:image.size.height*scaleSize))
-        image.draw(in: CGRect(x: 0.5*(KScreenWidth-image.size.width * scaleSize), y: 0, width: image.size.width * scaleSize, height: image.size.height*scaleSize))`
+
+	    static func scaleImage(image:UIImage,scaleSize:CGFloat) -> UIImage {
+
+	    UIGraphicsBeginImageContext(CGSize(width:image.size.width,height:image.size.height*scaleSize))
+        
+	    image.draw(in: CGRect(x: 0.5*(KScreenWidth-image.size.width * scaleSize), y: 0, width: image.size.width * scaleSize, height: image.size.height*scaleSize))
         
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
-        
         UIGraphicsEndImageContext()
-        
-        //对图片包得大小进行压缩
         let imageData =  UIImageJPEGRepresentation(scaledImage!,1)
         let m_selectImage = UIImage.init(data: imageData!)
         return m_selectImage!
     }
+    
+    
 3.2 画板的使用和结构
 ![(logo)](http://images2015.cnblogs.com/blog/818253/201705/818253-20170526145227450-1786765220.png)
 
@@ -84,11 +83,11 @@
 
 具体参考demo中RectangleBrush这个类中的实现
 
-`override func drawInContext(_ context: CGContext) {`
-        `// 矩形  不填充`
-`//context.addRect(CGRect(origin: CGPoint(x: min(beginPoint.x, endPoint.x), y: min(beginPoint.y, endPoint.y)),
-//size: CGSize(width: abs(endPoint.x - beginPoint.x), height: abs(endPoint.y - beginPoint.y))))`
-        `//context.addRect(CGRect(x: pointX!, y: pointY!, width: 8, height: 8))`
+	    override func drawInContext(_ context: CGContext) {
+        // 矩形  不填充
+	    //context.addRect(CGRect(origin: CGPoint(x: min(beginPoint.x, endPoint.x), y: min(beginPoint.y, endPoint.y)),
+	    //size: CGSize(width: abs(endPoint.x - beginPoint.x), height: abs(endPoint.y - beginPoint.y))))
+        //context.addRect(CGRect(x: pointX!, y: pointY!, width: 8, height: 8))
 
         // 模糊矩形  填充 画完一个小正方形之后把终点赋值为起点继续画
         let Width:CGFloat = 10
@@ -111,6 +110,7 @@
     override func supportedContinuousDrawing() -> Bool {
         return true
     }
+    
 ## 5.文本输入功能
 思路：手指触摸屏幕时，在屏幕上绘制一个textView，当textView输入结束时，将文字和图片绘制到同一个image中。 绘制的文字同样也支持撤销，橡皮擦等操作
 ![(logo)](http://images2015.cnblogs.com/blog/818253/201705/818253-20170526150404450-806964848.gif
@@ -123,8 +123,8 @@
 
 6.3 imageArray存储方法：当用户开始绘制时，先判断是不是最开始的那张图片（没有做任何操作的图片），如果是的，就将imageArray清空，如果不是最初的那张原图，就继续把绘制的image加入到数组中，这里面的逻辑也不复杂，需要认真的理一下。所以，在这里就不多少了，具体看demo，思考！
 ## 7.图片的保存  
-`// 返回画板上的图片，用于保存`
-
+	    
+	    // 返回画板上的图片，用于保存
     func takeImage() -> UIImage {
         UIGraphicsBeginImageContext(self.bounds.size)
         
@@ -159,7 +159,7 @@
         } else {
             UIAlertView(title: "提示", message: "保存成功", delegate: nil, cancelButtonTitle: "确定").show()
         }
-    }`
+    }
 
 
 

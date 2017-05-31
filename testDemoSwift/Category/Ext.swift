@@ -13,8 +13,8 @@ extension UIImage {
     static func scaleImage(image: UIImage) -> UIImage {
         // 画板高度
         let boardH = KScreenHeight-64-50-40
-        // 图片大小
-        UIGraphicsBeginImageContext(CGSize(width:KScreenWidth,height:boardH))
+        // 图片大小   UIScreen.main.scale屏幕密度，不加这个图片会不清晰
+        UIGraphicsBeginImageContextWithOptions(CGSize(width:KScreenWidth,height:boardH), false, UIScreen.main.scale)
         // 真正图片显示的位置
         // 图片的宽高比
         let picBili: CGFloat = image.size.width/image.size.height

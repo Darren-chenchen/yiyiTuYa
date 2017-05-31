@@ -99,7 +99,7 @@ class EditorViewController: UIViewController {
         drawBoardImageView = DrawBoard.init(frame:scrollView.bounds)
         drawBoardImageView.isUserInteractionEnabled = true
         // 对长图压缩处理
-        let scaleImage = UIImage.scaleImage(image: self.editorImage, scaleSize: scrollView.cl_height/self.editorImage.size.height)
+        let scaleImage = UIImage.scaleImage(image: self.editorImage)
         drawBoardImageView.backgroundColor = UIColor(patternImage: scaleImage)
         scrollView?.addSubview(drawBoardImageView)
         drawBoardImageView.beginDraw = {[weak self]() in

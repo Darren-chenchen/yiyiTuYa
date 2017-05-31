@@ -60,25 +60,30 @@
 3.2 因为截取的是一个长图，所以如果直接设置 drawBoardImageView.backgroundColor = UIColor(patternImage: self.editorImage)，就会只显示图片的一部分，所以要对图片进行压缩
 。在压缩图片时需要注意一点：图片的大小还是屏幕大小，只是内容压缩，如果图片宽度小于屏幕宽度，图片会平铺铺满整个界面。下面是压缩图片的代码
 
-	    static func scaleImage(image:UIImage,scaleSize:CGFloat) -> UIImage {
-
-	    // 画板的高度
+	    static func scaleImage(image: UIImage) -> UIImage {
+        // 画板高度
         let boardH = KScreenHeight-64-50-40
         // 图片大小
         UIGraphicsBeginImageContext(CGSize(width:KScreenWidth,height:boardH))
+        // 真正图片显示的位置
+        // 图片的宽高比
+        let picBili: CGFloat = image.size.width/image.size.height
+        // 画板的宽高比
+        let boardBili: CGFloat = KScreenWidth/boardH
         
-        let imageY: CGFloat!
-        if scaleSize==1 {
-            imageY = (boardH - image.size.height)*0.5
+        // 如果图片太长，以高为准,否则以宽为准
+        if picBili<=boardBili {
+            image.draw(in: CGRect(x: 0.5*(KScreenWidth-boardH*picBili), y: 0, width: boardH*picBili, height: boardH))
         } else {
-            imageY = 0
+            image.draw(in: CGRect(x: 0, y:0.5*(boardH-KScreenWidth/picBili) , width: KScreenWidth, height: KScreenWidth/picBili))
         }
-        image.draw(in: CGRect(x: 0.5*(KScreenWidth-image.size.width * scaleSize), y: imageY, width: image.size.width * scaleSize, height: image.size.height*scaleSize))
-
         
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        
         UIGraphicsEndImageContext()
-        let imageData =  UIImageJPEGRepresentation(scaledImage!,1)
+        
+        //对图片包得大小进行压缩
+        let imageData =  UIImagePNGRepresentation(scaledImage!)
         let m_selectImage = UIImage.init(data: imageData!)
         return m_selectImage!
     }

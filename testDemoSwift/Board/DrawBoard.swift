@@ -217,7 +217,7 @@ class DrawBoard: UIImageView {
     //MARK: - 将文本与图片融合
     fileprivate func DrawTextAndImage(text: String){
         //开启图片上下文
-        UIGraphicsBeginImageContext(self.bounds.size)
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.main.scale)
         //图形重绘
         self.draw(self.bounds)
         //水印文字属性
@@ -252,7 +252,7 @@ class DrawBoard: UIImageView {
         if let brush = self.brush {
             
             // 1.开启一个新的ImageContext，为保存每次的绘图状态作准备。
-            UIGraphicsBeginImageContext(self.bounds.size)
+            UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.main.scale)
             
             // 2.初始化context，进行基本设置（画笔宽度、画笔颜色、画笔的圆润度等）。
             let context = UIGraphicsGetCurrentContext()
@@ -303,7 +303,7 @@ class DrawBoard: UIImageView {
     
     //MARK: - 返回画板上的图片，用于保存
     func takeImage() -> UIImage {
-        UIGraphicsBeginImageContext(self.bounds.size)
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.main.scale)
         
         self.backgroundColor?.setFill()
         UIRectFill(self.bounds)

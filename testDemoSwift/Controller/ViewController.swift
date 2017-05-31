@@ -54,7 +54,7 @@ class ViewController: UIViewController {
     // 截取webview所有的内容
     func screenShot() -> UIImage {
         var image = UIImage()
-        UIGraphicsBeginImageContextWithOptions(self.webView.scrollView.contentSize, true, 0)
+        UIGraphicsBeginImageContextWithOptions(self.webView.scrollView.contentSize, true, UIScreen.main.scale)
         //保存webView当前的偏移量
         let savedContentOffset = self.webView.scrollView.contentOffset
         let saveFrame = self.webView.scrollView.frame

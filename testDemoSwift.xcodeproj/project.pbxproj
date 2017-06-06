@@ -559,7 +559,7 @@
 				TargetAttributes = {
 					EDFE8C2A1ECD3158006E626C = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 868LA23363;
+						DevelopmentTeam = X3GVR7H4ML;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
@@ -769,7 +769,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 868LA23363;
+				DEVELOPMENT_TEAM = X3GVR7H4ML;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/testDemoSwift/Share/ShareSDK",
@@ -805,7 +805,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 868LA23363;
+				DEVELOPMENT_TEAM = X3GVR7H4ML;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/testDemoSwift/Share/ShareSDK",

@@ -126,17 +126,17 @@ class EditorViewController: UIViewController {
     
     //MARK: - 分享
     func clickShareBtn() {
-//        let win = UIApplication.shared.keyWindow
-//        let shareView = CLShareView()
-//        shareView.shareTitle = ""
-//        shareView.shareUrlStr = ""
-//        shareView.shareContent = ""
-//        shareView.shareImage = self.drawBoardImageView.takeImage()
-//        win?.addSubview(shareView)
-        let activityViewController = UIActivityViewController(activityItems: [self.drawBoardImageView.takeImage()], applicationActivities: nil)
-        present(activityViewController, animated: true) { () -> Void in
-            
-        }
+        let win = UIApplication.shared.keyWindow
+        let shareView = CLShareView()
+        shareView.shareTitle = ""
+        shareView.shareUrlStr = ""
+        shareView.shareContent = ""
+        shareView.shareImage = self.drawBoardImageView.takeImage()
+        win?.addSubview(shareView)
+//        let activityViewController = UIActivityViewController(activityItems: [self.drawBoardImageView.takeImage()], applicationActivities: nil)
+//        present(activityViewController, animated: true) { () -> Void in
+//            
+//        }
     }
     
     //MARK: - 选择画笔颜色

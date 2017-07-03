@@ -62,7 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        return WeiboSDK.handleOpen(url as URL!, delegate: self)
+        return true
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -89,12 +89,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 }
-extension AppDelegate:WeiboSDKDelegate{
-    func didReceiveWeiboRequest(_ request: WBBaseRequest!) {
-        
-    } func didReceiveWeiboResponse(_ response: WBBaseResponse!) {
-        
-    }
-}
+
 
 

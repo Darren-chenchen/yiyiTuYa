@@ -27,6 +27,10 @@ let KTabBarHeight: CGFloat = 49.0
 let kOSS = "?x-oss-process=image/resize,w_"
 
 
+let win = UIApplication.shared.keyWindow
+let CLNotificationCenter = NotificationCenter.default
+
+
 //MARK: - RGBA颜色
 var RGBAColor: (CGFloat, CGFloat, CGFloat, CGFloat) -> UIColor = {red, green, blue, alpha in
     return UIColor(red: red / 255, green: green / 255, blue: blue / 255, alpha: alpha);

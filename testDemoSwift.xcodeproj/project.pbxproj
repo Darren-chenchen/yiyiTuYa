@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		5ABC2D73214679D63810E569 /* Pods_testDemoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67F813FAF5329150DC53BEE7 /* Pods_testDemoSwift.framework */; };
+		950B6EE71F1619BB00E714EE /* CTImageEditUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 950B6EE61F1619BB00E714EE /* CTImageEditUtil.m */; };
+		950B6EEA1F161A7A00E714EE /* UIImage+EditImageWithColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 950B6EE91F161A7A00E714EE /* UIImage+EditImageWithColor.m */; };
+		950B6EF71F1741FA00E714EE /* GaussianBlurBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950B6EF61F1741FA00E714EE /* GaussianBlurBrush.swift */; };
 		95C68D301F09CBA3006B8AAA /* BoardInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C68D2F1F09CBA3006B8AAA /* BoardInputView.swift */; };
 		95C68D331F09CDAA006B8AAA /* DBUndoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C68D311F09CDAA006B8AAA /* DBUndoManager.swift */; };
 		95C68D341F09CDAA006B8AAA /* DrawBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C68D321F09CDAA006B8AAA /* DrawBoard.swift */; };
@@ -86,6 +89,11 @@
 		2FFC093569BB0182BD3176C6 /* Pods-testDemoSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testDemoSwift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-testDemoSwift/Pods-testDemoSwift.debug.xcconfig"; sourceTree = "<group>"; };
 		599898F484D757F1D078DA9A /* Pods-testDemoSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testDemoSwift.release.xcconfig"; path = "Pods/Target Support Files/Pods-testDemoSwift/Pods-testDemoSwift.release.xcconfig"; sourceTree = "<group>"; };
 		67F813FAF5329150DC53BEE7 /* Pods_testDemoSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_testDemoSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		950B6EE51F1619BB00E714EE /* CTImageEditUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTImageEditUtil.h; sourceTree = "<group>"; };
+		950B6EE61F1619BB00E714EE /* CTImageEditUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTImageEditUtil.m; sourceTree = "<group>"; };
+		950B6EE81F161A7A00E714EE /* UIImage+EditImageWithColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+EditImageWithColor.h"; sourceTree = "<group>"; };
+		950B6EE91F161A7A00E714EE /* UIImage+EditImageWithColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+EditImageWithColor.m"; sourceTree = "<group>"; };
+		950B6EF61F1741FA00E714EE /* GaussianBlurBrush.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GaussianBlurBrush.swift; sourceTree = "<group>"; };
 		95C68D2F1F09CBA3006B8AAA /* BoardInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardInputView.swift; sourceTree = "<group>"; };
 		95C68D311F09CDAA006B8AAA /* DBUndoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBUndoManager.swift; sourceTree = "<group>"; };
 		95C68D321F09CDAA006B8AAA /* DrawBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawBoard.swift; sourceTree = "<group>"; };
@@ -229,6 +237,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		950B6EE41F1619B100E714EE /* CTImageEdit */ = {
+			isa = PBXGroup;
+			children = (
+				950B6EE81F161A7A00E714EE /* UIImage+EditImageWithColor.h */,
+				950B6EE91F161A7A00E714EE /* UIImage+EditImageWithColor.m */,
+				950B6EE51F1619BB00E714EE /* CTImageEditUtil.h */,
+				950B6EE61F1619BB00E714EE /* CTImageEditUtil.m */,
+			);
+			path = CTImageEdit;
+			sourceTree = "<group>";
+		};
 		9FB2DF5D08F3E9B25C244544 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -381,6 +400,7 @@
 				EDC77CE11ED7DFF000B82913 /* LineBrush.swift */,
 				EDC77CE21ED7DFF000B82913 /* PencilBrush.swift */,
 				EDC77CE31ED7DFF000B82913 /* RectangleBrush.swift */,
+				950B6EF61F1741FA00E714EE /* GaussianBlurBrush.swift */,
 			);
 			path = Board;
 			sourceTree = "<group>";
@@ -411,6 +431,7 @@
 		EDC77CEE1ED7DFF000B82913 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				950B6EE41F1619B100E714EE /* CTImageEdit */,
 				EDC77CEF1ED7DFF000B82913 /* IQKeyboardManager */,
 			);
 			path = lib;
@@ -703,10 +724,12 @@
 				EDC77D211ED7DFF000B82913 /* Ext.swift in Sources */,
 				95C68D301F09CBA3006B8AAA /* BoardInputView.swift in Sources */,
 				EDC77D1C1ED7DFF000B82913 /* EraserBrush.swift in Sources */,
+				950B6EE71F1619BB00E714EE /* CTImageEditUtil.m in Sources */,
 				EDC77D291ED7DFF000B82913 /* IQUIScrollView+Additions.m in Sources */,
 				EDC77D2E1ED7DFF000B82913 /* IQKeyboardManager.m in Sources */,
 				EDC77D271ED7DFF000B82913 /* ViewController.swift in Sources */,
 				EDC77D2B1ED7DFF000B82913 /* IQUIView+Hierarchy.m in Sources */,
+				950B6EF71F1741FA00E714EE /* GaussianBlurBrush.swift in Sources */,
 				EDC77D371ED7DFF100B82913 /* LICENSE.md in Sources */,
 				ED8DD2051ECD51BD00313E6F /* AppConfig.swift in Sources */,
 				ED210C781ED6A8C10045080C /* CLShareView.swift in Sources */,
@@ -715,6 +738,7 @@
 				EDC77D1D1ED7DFF000B82913 /* InputBrush.swift in Sources */,
 				EDC77D1A1ED7DFF000B82913 /* BaseBrush.swift in Sources */,
 				ED210C771ED6A8C10045080C /* CLCoustomButton.swift in Sources */,
+				950B6EEA1F161A7A00E714EE /* UIImage+EditImageWithColor.m in Sources */,
 				EDFE8C2F1ECD3158006E626C /* AppDelegate.swift in Sources */,
 				EDC77D221ED7DFF000B82913 /* UIView+Ext.m in Sources */,
 				EDC77D231ED7DFF000B82913 /* UIView+Frame.swift in Sources */,

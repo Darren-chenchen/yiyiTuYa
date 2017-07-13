@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D30" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16D30" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,6 +19,7 @@
                 <outlet property="returnBtn" destination="UX3-fj-nrY" id="1cU-eA-ibK"/>
                 <outlet property="settingView" destination="0Ed-Ab-V5w" id="6Bq-rC-piR"/>
                 <outlet property="slideView" destination="TCJ-vS-lob" id="EeD-b7-Ng6"/>
+                <outlet property="typeLable" destination="81M-fv-1bM" id="AcL-te-pWQ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -67,16 +68,24 @@
                                 <action selector="clickEraserBtn:" destination="-1" eventType="touchUpInside" id="TYr-vD-7Vs"/>
                             </connections>
                         </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="81M-fv-1bM">
+                            <rect key="frame" x="8" y="24.5" width="0.0" height="0.0"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="0b1-hA-e1c" firstAttribute="leading" secondItem="IAx-0d-PZ5" secondAttribute="leading" id="0w8-N9-bcm"/>
                         <constraint firstItem="Va4-jm-4i8" firstAttribute="leading" secondItem="VyV-Qn-egR" secondAttribute="trailing" constant="19" id="Mn8-KA-Fs4"/>
                         <constraint firstItem="VyV-Qn-egR" firstAttribute="centerX" secondItem="IAx-0d-PZ5" secondAttribute="centerX" constant="-30" id="NDB-UJ-XZX"/>
+                        <constraint firstItem="81M-fv-1bM" firstAttribute="centerY" secondItem="IAx-0d-PZ5" secondAttribute="centerY" id="Sbx-nQ-Lxv"/>
                         <constraint firstItem="Va4-jm-4i8" firstAttribute="top" secondItem="0b1-hA-e1c" secondAttribute="bottom" constant="1" id="XBk-a4-Nat"/>
                         <constraint firstAttribute="trailing" secondItem="0b1-hA-e1c" secondAttribute="trailing" id="lNT-PH-1Nw"/>
                         <constraint firstItem="VyV-Qn-egR" firstAttribute="top" secondItem="0b1-hA-e1c" secondAttribute="bottom" id="meT-jL-yh3"/>
                         <constraint firstItem="0b1-hA-e1c" firstAttribute="top" secondItem="IAx-0d-PZ5" secondAttribute="top" id="p9e-ba-sfX"/>
+                        <constraint firstItem="81M-fv-1bM" firstAttribute="leading" secondItem="IAx-0d-PZ5" secondAttribute="leading" constant="8" id="qLp-dC-eYI"/>
                         <constraint firstAttribute="height" constant="49" id="yFo-HX-qRx"/>
                     </constraints>
                 </view>

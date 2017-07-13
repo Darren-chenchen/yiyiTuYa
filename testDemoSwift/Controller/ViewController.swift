@@ -49,6 +49,7 @@ class ViewController: UIViewController {
         let editorVC = EditorViewController(nibName: "EditorViewController", bundle: nil)
         editorVC.editorImage = self.screenShot()
         self.navigationController?.pushViewController(editorVC, animated: true)
+        
     }
     
     // 截取webview所有的内容
@@ -86,7 +87,7 @@ class ViewController: UIViewController {
     
     //MARK: - 截取屏幕图片
     @IBAction func clickShotBtn(_ sender: Any) {
-        let editorVC = EditorViewController()
+        let editorVC = EditorViewController(nibName: "EditorViewController", bundle: nil)
         editorVC.editorImage = self.screenCut()
         self.navigationController?.pushViewController(editorVC, animated: true)
     }

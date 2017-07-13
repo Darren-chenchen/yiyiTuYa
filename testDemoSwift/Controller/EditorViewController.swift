@@ -10,6 +10,8 @@ import UIKit
 
 class EditorViewController: UIViewController {
 
+    // 模式
+    @IBOutlet weak var typeLable: UILabel!
     // 画笔
     @IBOutlet weak var pencilBtn: UIButton!
     // 橡皮擦
@@ -48,9 +50,11 @@ class EditorViewController: UIViewController {
                 return
             }
             
-            // 如果是模糊图片就设置RectangleBrush
+            // 马赛克
             if img == UIImage(named: "11") {
                 self?.drawBoardImageView?.brush = RectangleBrush()
+            } else if img == UIImage(named: "12") {  // 高斯模糊
+                self?.drawBoardImageView?.brush = GaussianBlurBrush()
             } else {
                 self?.drawBoardImageView?.brush = PencilBrush()
             }
@@ -62,6 +66,7 @@ class EditorViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         
         initView()
     }
@@ -101,6 +106,7 @@ class EditorViewController: UIViewController {
         // 对长图压缩处理
         let scaleImage = UIImage.scaleImage(image: self.editorImage)
         drawBoardImageView.backgroundColor = UIColor(patternImage: scaleImage)
+        drawBoardImageView.currentImage = scaleImage
         scrollView?.addSubview(drawBoardImageView)
         drawBoardImageView.beginDraw = {[weak self]() in
             self?.backBtn.isEnabled = true
@@ -113,11 +119,12 @@ class EditorViewController: UIViewController {
         }
         
         // 默认的画笔
-        self.drawBoardImageView.strokeColor = UIColor(patternImage: UIImage(named: "6")!)
-        self.pencilImage.image = UIImage(named: "6")!
+        self.drawBoardImageView.strokeColor = UIColor(patternImage: UIImage(named: "clr_black")!)
+        self.pencilImage.image = UIImage(named: "clr_black")!
     }
     //MARK: - 编辑,文本输入
     func clickEditorBtn() {
+        self.typeLable.text = "编辑模式"
         self.scrollView.isScrollEnabled = false
         self.pencilBtn.isSelected = false
         self.eraserBtn.isSelected = false
@@ -133,10 +140,6 @@ class EditorViewController: UIViewController {
         shareView.shareContent = ""
         shareView.shareImage = self.drawBoardImageView.takeImage()
         win?.addSubview(shareView)
-//        let activityViewController = UIActivityViewController(activityItems: [self.drawBoardImageView.takeImage()], applicationActivities: nil)
-//        present(activityViewController, animated: true) { () -> Void in
-//            
-//        }
     }
     
     //MARK: - 选择画笔颜色
@@ -197,9 +200,13 @@ class EditorViewController: UIViewController {
             self.pencilBtn?.isSelected = true
             self.eraserBtn?.isSelected = false
             
+            self.typeLable.text = "画笔模式"
+            
             // 先判断是不是模糊矩形
             if self.pencilImage.image == UIImage(named: "11") {
                 drawBoardImageView?.brush = RectangleBrush()
+            } else if self.pencilImage.image == UIImage(named: "12") {  // 高斯模糊
+                drawBoardImageView?.brush = GaussianBlurBrush()
             } else {
                 drawBoardImageView?.brush = PencilBrush()
             }
@@ -213,6 +220,9 @@ class EditorViewController: UIViewController {
     @IBAction func clickEraserBtn(_ sender: Any) {
         self.eraserBtn?.isSelected = !(self.eraserBtn?.isSelected)!
         if (self.eraserBtn?.isSelected)! {
+            
+            self.typeLable.text = "橡皮擦模式"
+            
             self.scrollView.isScrollEnabled = false
             self.pencilBtn?.isSelected = false
             self.eraserBtn?.isSelected = true

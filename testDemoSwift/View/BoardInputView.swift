@@ -13,6 +13,9 @@ import SnapKit
 
 class BoardInputView: UIView {
     
+    var currentImage: UIImageView?
+
+    
     // 定义一些重要的参数
     // 底部颜色选择的高度
     let bottomViewH: CGFloat = 40
@@ -75,6 +78,15 @@ class BoardInputView: UIView {
             scrollView.addSubview(img)
             
             img.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(BoardInputView.clickPencilImageView(tap:))))
+            
+            // 默认选中红色
+            if i == 0 {
+                self.currentImage = img
+                self.currentImage?.alpha = 0.5
+                HDViewsBorder(self.currentImage!, borderWidth: 0, borderColor: UIColor.white, cornerRadius: 3)
+                self.textView.textColor = UIColor.red
+            }
+
         }
         
         scrollView.contentSize = CGSize(width: magin*CGFloat(imageArr.count+1)+imgW*CGFloat(imageArr.count)-KScreenWidth, height: 0)
@@ -83,7 +95,15 @@ class BoardInputView: UIView {
     }
     
     func clickPencilImageView(tap:UITapGestureRecognizer) {
+        self.currentImage?.alpha = 1
+        HDViewsBorder(self.currentImage!, borderWidth: 1.5, borderColor: UIColor.white, cornerRadius: 3)
+        
         let imageView = tap.view as! UIImageView
+        imageView.alpha = 0.5
+        HDViewsBorder(imageView, borderWidth: 0, borderColor: UIColor.white, cornerRadius: 3)
+        
+        self.currentImage = imageView
+        
         self.textView.textColor = UIColor(patternImage: imageView.image!)
     }
     

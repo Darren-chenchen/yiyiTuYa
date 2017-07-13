@@ -29,7 +29,7 @@ class DrawBoard: UIImageView {
     // 不能再撤销或者前进
     var unableDraw: undoUnableActionClouse?
     var reableDraw: redoUnableActionClouse?
-
+    
     fileprivate var boardUndoManager = DBUndoManager() // 缓存或Undo控制器
     var canUndo: Bool {
         get {
@@ -51,7 +51,20 @@ class DrawBoard: UIImageView {
     fileprivate var realImage: UIImage?
     var strokeWidth: CGFloat = 3
     // 画笔颜色，文本输入框的字体颜色
-    var strokeColor: UIColor = UIColor.black
+    var strokeColor: UIColor = UIColor.red
+    // 马赛克填充颜色
+    var strokeMasicColor: UIColor = UIColor.clear
+    // 高斯模糊
+    var strokeGauussianColor: UIColor = UIColor.clear
+    // 当前编辑的图片
+    var currentImage: UIImage? {
+        didSet{
+            let image = CTImageEditUtil.getScaleImage(with: self.currentImage)
+            let realImage = CTImageEditUtil.getImageWithOldImage(image)
+            self.strokeGauussianColor = UIColor(patternImage: CTImageEditUtil.filter(forGaussianBlur: realImage))
+        }
+    }
+    
     // 文本编辑状态,文本的字体大小
     var textFont: UIFont = UIFont.systemFont(ofSize: 16)
     // 释放
@@ -63,6 +76,8 @@ class DrawBoard: UIImageView {
     var currentLable: UILabel!
     // 用于记录文本输入后的image
     var textImageFlag: UIImage!
+    // 记录当前用户选择的label位置
+    var currentLabelOrigin: CGPoint?
     // 键盘文本输入
     lazy var drawIputView: BoardInputView = {
         let input = BoardInputView.init(frame: CGRect(x: 0, y: KScreenHeight, width: KScreenWidth, height: 10+24+10+0.5+40))
@@ -81,7 +96,7 @@ class DrawBoard: UIImageView {
         initEventHendle()
         setupIQBoard()
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -105,13 +120,22 @@ class DrawBoard: UIImageView {
                 self.eraserImage.backgroundColor = mainColor
             }
             
+            // 马赛克
+            if self.brush?.classForKeyedArchiver == RectangleBrush.classForCoder()  {
+                self.strokeMasicColor = self.color(of: brush.endPoint)
+            }
+            
+            
             // 如果是文本输入就展示文本，其他的是绘图
             if self.brush?.classForKeyedArchiver == InputBrush.classForCoder()  {
                 self.drawingText()
             } else {
-                self.drawingImage()
-                if beginDraw != nil {
-                    self.beginDraw!()
+                // 触摸点没有在文本上
+                if self.adjustBeginPoint() == true {
+                    self.drawingImage()
+                    if beginDraw != nil {
+                        self.beginDraw!()
+                    }
                 }
             }
         }
@@ -123,9 +147,26 @@ class DrawBoard: UIImageView {
             
             self.drawingState = .moved
             
-            // 如果是模糊矩形 就取到手指触摸哪一点的颜色值，讲那个颜色值填满整个小矩形
+            // 马赛克 就取到手指触摸哪一点的颜色值，讲那个颜色值填满整个小矩形
             if self.brush?.classForKeyedArchiver == RectangleBrush.classForCoder()  {
-                self.strokeColor = self.color(of: brush.endPoint)
+                // 触摸点没有在文本上
+                var flag = 0
+                // 遍历数组，判断触摸点是否在绘制文字所在的文本框内
+                for label in lableArray {
+                    // 把文本框放大
+                    let scaleFrame = CGRect(x: label.cl_x-10, y: label.cl_y-10, width: label.cl_width+20, height: label.cl_height+20)
+                    if scaleFrame.contains((self.brush?.endPoint)!){
+                        self.currentLable = label
+                        self.currentLabelOrigin = self.currentLable.frame.origin
+                        flag = flag + 1
+                    }
+                }
+                
+                if flag == 0 {
+                    self.strokeMasicColor = self.color(of: brush.endPoint)
+                } else {  // 触摸点在哪个文本上就取到那个文本的颜色值
+                    self.strokeMasicColor = self.currentLable.textColor
+                }
             }
             
             // 如果是橡皮擦，展示橡皮擦的效果
@@ -133,10 +174,13 @@ class DrawBoard: UIImageView {
                 let imageW = self.strokeWidth*3
                 self.eraserImage.frame = CGRect(origin: brush.endPoint, size: CGSize(width: imageW, height: imageW))
             }
-
+            
             if self.brush?.classForKeyedArchiver == InputBrush.classForCoder()  {
             } else {
-                self.drawingImage()
+                // 触摸点没有在文本上
+                if self.adjustBeginPoint() == true {
+                    self.drawingImage()
+                }
             }
         }
     }
@@ -159,24 +203,20 @@ class DrawBoard: UIImageView {
             }
             if self.brush?.classForKeyedArchiver == InputBrush.classForCoder()  {
             } else {
-                self.drawingImage()
+                // 触摸点没有在文本上
+                if self.adjustBeginPoint() == true {
+                    self.drawingImage()
+                }
             }
         }
     }
     
     //MARK: - 写文字
     fileprivate func drawingText() {
-        var flag = 0
-        // 遍历数组，判断触摸点是否在绘制文字所在的文本框内
-        for label in lableArray {
-            if label.frame.contains((self.brush?.beginPoint)!){
-                self.currentLable = label
-                flag = flag + 1
-            }
-        }
-        // 没有触摸到label就让currentLable置nil
-        if flag == 0 {
+        
+        if self.adjustBeginPoint() == true {
             self.currentLable = nil
+            self.currentLabelOrigin = nil
         }
         
         // 说明是要画文字
@@ -197,6 +237,21 @@ class DrawBoard: UIImageView {
         }
     }
     
+    // 判断触摸点是否在文本输入框上面
+    func adjustBeginPoint() -> Bool{
+        var flag = 0
+        // 遍历数组，判断触摸点是否在绘制文字所在的文本框内
+        for label in lableArray {
+            if label.frame.contains((self.brush?.beginPoint)!){
+                self.currentLable = label
+                self.currentLabelOrigin = self.currentLable.frame.origin
+                flag = flag + 1
+            }
+        }
+        
+        return flag == 0   // true  不在文本上
+    }
+    
     // 点击文本
     func clickContentLable(tap:UITapGestureRecognizer) {
         self.drawIputView.textView.text = self.currentLable.text
@@ -208,6 +263,7 @@ class DrawBoard: UIImageView {
         let point : CGPoint = pan.translation(in: self.currentLable)
         self.currentLable.transform = self.currentLable.transform.translatedBy(x: point.x, y: point.y);
         pan.setTranslation(CGPoint(x:0,y:0), in: self.currentLable)
+        self.currentLabelOrigin = self.currentLable.frame.origin
     }
     
     //MARK: - 返回画板上的图片，用于保存
@@ -231,6 +287,7 @@ class DrawBoard: UIImageView {
         
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
+        
         
         return image!
     }
@@ -283,7 +340,7 @@ class DrawBoard: UIImageView {
         //移除通知
         NotificationCenter.default.removeObserver(self)
     }
-
+    
 }
 
 //MARK: - 绘图的2个主要方法
@@ -295,9 +352,9 @@ extension DrawBoard {
         //图形重绘
         self.draw(self.bounds)
         //水印文字属性
-        let att = [NSForegroundColorAttributeName:self.strokeColor,NSFontAttributeName:self.textFont,NSBackgroundColorAttributeName:UIColor.clear] as [String : Any]
+        var att = [String : Any]()
         for lable in self.lableArray {
-            //水印文字大小
+            att = [NSForegroundColorAttributeName:lable.textColor,NSFontAttributeName:self.textFont,NSBackgroundColorAttributeName:UIColor.clear] as [String : Any]            //水印文字大小
             let text = NSString(string: lable.text!)
             //绘制文字 ,文字显示的位置，要在textview的适当位置
             text.draw(in: lable.frame, withAttributes: att)
@@ -327,8 +384,15 @@ extension DrawBoard {
             context?.setLineWidth(self.strokeWidth)
             context?.setStrokeColor(self.strokeColor.cgColor)
             
-            // 模糊矩形可以用到，用于填充矩形
-            context?.setFillColor(self.strokeColor.cgColor)
+            if self.brush?.classForKeyedArchiver == GaussianBlurBrush.classForCoder()  {
+                context?.setLineWidth(self.strokeWidth*10)
+                context?.setStrokeColor(self.strokeGauussianColor.cgColor)
+            }
+            
+            if self.brush?.classForKeyedArchiver == RectangleBrush.classForCoder()  {
+                // 马赛克
+                context?.setFillColor(self.strokeMasicColor.cgColor)
+            }
             
             // 3.把之前保存的图片绘制进context中。
             if let realImage = self.realImage {
@@ -363,7 +427,6 @@ extension DrawBoard {
             brush.lastPoint = brush.endPoint
         }
     }
-
 }
 
 //MARK: - 监听键盘的出现与消失，文本输入
@@ -381,8 +444,11 @@ extension DrawBoard {
         self.currentLable.cl_width = KScreenWidth-30
         self.currentLable.textColor = self.drawIputView.textView.textColor
         self.currentLable.sizeToFit()
+        if self.currentLabelOrigin != nil {
+            self.currentLable.frame.origin = self.currentLabelOrigin!
+        }
     }
-
+    
     func initEventHendle() {
         
         CLNotificationCenter.addObserver(self, selector: #selector(keyBoardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -411,7 +477,7 @@ extension DrawBoard {
         kBoardH = kbRect.size.height
         //键盘弹出的时间
         let duration = kbInfo?[UIKeyboardAnimationDurationUserInfoKey] as! Double
-
+        
         //界面偏移动画
         UIView.animate(withDuration: duration) {
             self.drawIputView.cl_y = KScreenHeight-self.kBoardH-self.drawIputView.cl_height

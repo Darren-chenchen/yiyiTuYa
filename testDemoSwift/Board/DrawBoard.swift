@@ -54,6 +54,8 @@ class DrawBoard: UIImageView {
     var strokeColor: UIColor = UIColor.red
     // 马赛克填充颜色
     var strokeMasicColor: UIColor = UIColor.clear
+    // 和马赛克相关的图片
+    var masicImage: UIImage!
     // 高斯模糊
     var strokeGauussianColor: UIColor = UIColor.clear
     // 当前编辑的图片
@@ -120,12 +122,6 @@ class DrawBoard: UIImageView {
                 self.eraserImage.backgroundColor = mainColor
             }
             
-            // 马赛克
-            if self.brush?.classForKeyedArchiver == RectangleBrush.classForCoder()  {
-                self.strokeMasicColor = self.color(of: brush.endPoint)
-            }
-            
-            
             // 如果是文本输入就展示文本，其他的是绘图
             if self.brush?.classForKeyedArchiver == InputBrush.classForCoder()  {
                 self.drawingText()
@@ -146,28 +142,6 @@ class DrawBoard: UIImageView {
             brush.endPoint = touches.first!.location(in: self)
             
             self.drawingState = .moved
-            
-            // 马赛克 就取到手指触摸哪一点的颜色值，讲那个颜色值填满整个小矩形
-            if self.brush?.classForKeyedArchiver == RectangleBrush.classForCoder()  {
-                // 触摸点没有在文本上
-                var flag = 0
-                // 遍历数组，判断触摸点是否在绘制文字所在的文本框内
-                for label in lableArray {
-                    // 把文本框放大
-                    let scaleFrame = CGRect(x: label.cl_x-10, y: label.cl_y-10, width: label.cl_width+20, height: label.cl_height+20)
-                    if scaleFrame.contains((self.brush?.endPoint)!){
-                        self.currentLable = label
-                        self.currentLabelOrigin = self.currentLable.frame.origin
-                        flag = flag + 1
-                    }
-                }
-                
-                if flag == 0 {
-                    self.strokeMasicColor = self.color(of: brush.endPoint)
-                } else {  // 触摸点在哪个文本上就取到那个文本的颜色值
-                    self.strokeMasicColor = self.currentLable.textColor
-                }
-            }
             
             // 如果是橡皮擦，展示橡皮擦的效果
             if self.brush?.classForKeyedArchiver == EraserBrush.classForCoder() {
@@ -391,7 +365,8 @@ extension DrawBoard {
             
             if self.brush?.classForKeyedArchiver == RectangleBrush.classForCoder()  {
                 // 马赛克
-                context?.setFillColor(self.strokeMasicColor.cgColor)
+                context?.setLineWidth(30)
+                context?.setStrokeColor(UIColor(patternImage: self.masicImage).cgColor)
             }
             
             // 3.把之前保存的图片绘制进context中。

@@ -107,6 +107,7 @@ class EditorViewController: UIViewController {
         let scaleImage = UIImage.scaleImage(image: self.editorImage)
         drawBoardImageView.backgroundColor = UIColor(patternImage: scaleImage)
         drawBoardImageView.currentImage = scaleImage
+        drawBoardImageView.masicImage = UIImage.trans(toMosaicImage: self.editorImage, blockLevel: 20)
         scrollView?.addSubview(drawBoardImageView)
         drawBoardImageView.beginDraw = {[weak self]() in
             self?.backBtn.isEnabled = true

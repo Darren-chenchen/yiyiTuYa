@@ -20,4 +20,6 @@
 + (UIImage*)createImageWithColor:(UIColor*)color;
 
 + (UIImage*)imageWithName:(NSString*)str;
+
++ (UIImage *)transToMosaicImage:(UIImage*)orginImage blockLevel:(NSUInteger)level;
 @end

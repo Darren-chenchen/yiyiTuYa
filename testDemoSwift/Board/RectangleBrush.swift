@@ -12,23 +12,13 @@ class RectangleBrush: BaseBrush {
    
     override func drawInContext(_ context: CGContext) {
         
-        // 模糊矩形  填充 画完一个小正方形之后把终点赋值为起点继续画
-        let Width:CGFloat = 10
-        var pointX: CGFloat?
-        if abs(endPoint.x-beginPoint.x)>Width {
-            pointX = endPoint.x
+        if let lastPoint = self.lastPoint {
+            context.move(to: CGPoint(x: lastPoint.x, y: lastPoint.y))
+            context.addLine(to: CGPoint(x: endPoint.x, y: endPoint.y))
         } else {
-            pointX = beginPoint.x
+            context.move(to: CGPoint(x: beginPoint.x, y: beginPoint.y))
+            context.addLine(to: CGPoint(x: endPoint.x, y: endPoint.y))
         }
-        
-        var pointY: CGFloat?
-        if abs(endPoint.y-beginPoint.y)>Width {
-            pointY = endPoint.y
-        } else {
-            pointY = beginPoint.y
-        }
-        context.fill(CGRect(x: pointX!, y: pointY!, width: Width, height: Width))
-        
     }
     
     override func supportedContinuousDrawing() -> Bool {

@@ -95,38 +95,9 @@
 ## 4.马赛克功能  
 ![(logo)](http://images2015.cnblogs.com/blog/818253/201705/818253-20170526150905935-1737313357.png)
 
-原理：获取手指在屏幕上接触的那一个点的颜色值，然后拿到这个颜色值不断地绘制一个10*10的小矩形。这个马赛克功能的实现思路是我自己想到的，如果有其他更好的思路还麻烦提供给我，我将作出改进。
+原理：先将要绘制的图片转换成马赛克图片，然后将马赛克图片设置成画笔的颜色就完美实现了马赛克功能。
 
-具体参考demo中RectangleBrush这个类中的实现
-
-	    override func drawInContext(_ context: CGContext) {
-        // 矩形  不填充
-	    //context.addRect(CGRect(origin: CGPoint(x: min(beginPoint.x, endPoint.x), y: min(beginPoint.y, endPoint.y)),
-	    //size: CGSize(width: abs(endPoint.x - beginPoint.x), height: abs(endPoint.y - beginPoint.y))))
-        //context.addRect(CGRect(x: pointX!, y: pointY!, width: 8, height: 8))
-
-        // 模糊矩形  填充 画完一个小正方形之后把终点赋值为起点继续画
-        let Width:CGFloat = 10
-        var pointX: CGFloat?
-        if abs(endPoint.x-beginPoint.x)>Width {
-            pointX = endPoint.x
-        } else {
-            pointX = beginPoint.x
-        }
-        
-        var pointY: CGFloat?
-        if abs(endPoint.y-beginPoint.y)>Width {
-            pointY = endPoint.y
-        } else {
-            pointY = beginPoint.y
-        }
-        context.fill(CGRect(x: pointX!, y: pointY!, width: Width, height: Width))
-    }
-    
-    override func supportedContinuousDrawing() -> Bool {
-        return true
-    }
-    
+具体参考demo    
 ## 5.文本输入功能
 思路：手指触摸屏幕时，在屏幕上绘制一个textView，当textView输入结束时，将文字和图片绘制到同一个image中。 绘制的文字同样也支持撤销，橡皮擦等操作
 

@@ -9,7 +9,7 @@
 import UIKit
 
 class DBUndoManager {
-
+    
     var index = -1
     // 数组中保存图片
     var imageArray = [UIImage]()
@@ -32,14 +32,19 @@ class DBUndoManager {
             imageArray.removeAll()
         }
         
-        imageArray.append(image)
+        let imgData = UIImagePNGRepresentation(image)
+        let img = UIImage.init(data: imgData!)
+        
+        imageArray.append(img!)
         index = imageArray.count - 1
     }
     
     func imageForUndo() -> UIImage? {
         index = index-1
         if index>=0 {
-            return imageArray[index]
+            let imgData = UIImagePNGRepresentation(imageArray[index])
+            let img = UIImage.init(data: imgData!)
+            return img
         } else {
             index = -1
             return nil
@@ -49,10 +54,14 @@ class DBUndoManager {
     func imageForRedo() -> UIImage? {
         index = index+1
         if index<=imageArray.count-1 {
-            return imageArray[index]
+            let imgData = UIImagePNGRepresentation(imageArray[index])
+            let img = UIImage.init(data: imgData!)
+            return img
         } else {
             index = imageArray.count-1
-            return imageArray[imageArray.count-1]
+            let imgData = UIImagePNGRepresentation(imageArray[index])
+            let img = UIImage.init(data: imgData!)
+            return img
         }
     }
 }
